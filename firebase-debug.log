@@ -1,0 +1,37 @@
+[debug] [2026-04-01T19:34:13.815Z] ----------------------------------------------------------------------
+[debug] [2026-04-01T19:34:13.817Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\MSI\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only database --project turkish-quiz-game
+[debug] [2026-04-01T19:34:13.817Z] CLI Version:   14.12.0
+[debug] [2026-04-01T19:34:13.817Z] Platform:      win32
+[debug] [2026-04-01T19:34:13.817Z] Node Version:  v24.4.1
+[debug] [2026-04-01T19:34:13.817Z] Time:          Wed Apr 01 2026 22:34:13 GMT+0300 (Eastern European Summer Time)
+[debug] [2026-04-01T19:34:13.817Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-04-01T19:34:13.937Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-01T19:34:14.609Z] Running auto auth
+[debug] [2026-04-01T19:34:14.609Z] [iam] checking project turkish-quiz-game for permissions ["firebase.projects.get","firebasedatabase.instances.update"]
+[debug] [2026-04-01T19:34:14.610Z] No OAuth tokens found
+[debug] [2026-04-01T19:34:14.610Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/turkish-quiz-game:testIamPermissions [none]
+[debug] [2026-04-01T19:34:14.610Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/turkish-quiz-game:testIamPermissions x-goog-quota-user=projects/turkish-quiz-game
+[debug] [2026-04-01T19:34:14.610Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/turkish-quiz-game:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update"]}
+[debug] [2026-04-01T19:34:15.676Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/turkish-quiz-game:testIamPermissions 200
+[debug] [2026-04-01T19:34:15.676Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/turkish-quiz-game:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update"]}
+[debug] [2026-04-01T19:34:15.676Z] No OAuth tokens found
+[debug] [2026-04-01T19:34:15.676Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/turkish-quiz-game [none]
+[debug] [2026-04-01T19:34:16.107Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/turkish-quiz-game 200
+[debug] [2026-04-01T19:34:16.107Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/turkish-quiz-game {"projectId":"turkish-quiz-game","projectNumber":"776111215553","displayName":"Turkish Quiz","name":"projects/turkish-quiz-game","resources":{"hostingSite":"turkish-quiz-game","realtimeDatabaseInstance":"turkish-quiz-game-default-rtdb"},"state":"ACTIVE","etag":"1_15335d91-59d1-4931-968c-b0a3cf0e93d6"}
+[info] 
+[info] === Deploying to 'turkish-quiz-game'...
+[info] 
+[info] i  deploying database 
+[info] i  database: checking rules syntax... 
+[debug] [2026-04-01T19:34:16.110Z] No OAuth tokens found
+[debug] [2026-04-01T19:34:16.110Z] >>> [apiv2][query] GET https://firebasedatabase.googleapis.com/v1beta/projects/turkish-quiz-game/locations/-/instances/turkish-quiz-game-default-rtdb [none]
+[debug] [2026-04-01T19:34:17.141Z] <<< [apiv2][status] GET https://firebasedatabase.googleapis.com/v1beta/projects/turkish-quiz-game/locations/-/instances/turkish-quiz-game-default-rtdb 403
+[debug] [2026-04-01T19:34:17.141Z] <<< [apiv2][body] GET https://firebasedatabase.googleapis.com/v1beta/projects/turkish-quiz-game/locations/-/instances/turkish-quiz-game-default-rtdb {"error":{"code":403,"message":"Your application is authenticating by using local Application Default Credentials. The firebasedatabase.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .","status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"service":"firebasedatabase.googleapis.com","consumer":"projects/764086051850"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Your application is authenticating by using local Application Default Credentials. The firebasedatabase.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds ."}]}}
+[debug] [2026-04-01T19:34:17.142Z] Request to https://firebasedatabase.googleapis.com/v1beta/projects/turkish-quiz-game/locations/-/instances/turkish-quiz-game-default-rtdb had HTTP Error: 403, Your application is authenticating by using local Application Default Credentials. The firebasedatabase.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .
+[debug] [2026-04-01T19:34:17.143Z] FirebaseError: Request to https://firebasedatabase.googleapis.com/v1beta/projects/turkish-quiz-game/locations/-/instances/turkish-quiz-game-default-rtdb had HTTP Error: 403, Your application is authenticating by using local Application Default Credentials. The firebasedatabase.googleapis.com API requires a quota project, which is not set by default. To learn how to set your quota project, see https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds .
+    at responseToError (C:\Users\MSI\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:52:12)
+    at RetryOperation._fn (C:\Users\MSI\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[error] 
+[error] Error: Failed to get instance details for instance: turkish-quiz-game-default-rtdb. See firebase-debug.log for more details.

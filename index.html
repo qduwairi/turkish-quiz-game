@@ -18,6 +18,16 @@
       <h2 class="sidebar-title">Turkish</h2>
       <p class="sidebar-subtitle">Select a unit</p>
     </div>
+    <div id="flagged-section" class="sidebar-flagged-section hidden">
+      <button class="sidebar-unit sidebar-flagged" id="flagged-deck-btn" onclick="startFlaggedQuiz()">
+        <span class="sidebar-unit-name">&#9733; Flagged</span>
+        <span class="sidebar-unit-meta" id="flagged-count">0 cards</span>
+      </button>
+      <div class="flagged-actions">
+        <button class="flagged-action-btn" onclick="exportFlagged()" title="Export flagged cards">Export</button>
+        <label class="flagged-action-btn" title="Import flagged cards">Import<input type="file" accept=".json" onchange="importFlagged(event)" hidden></label>
+      </div>
+    </div>
     <nav class="sidebar-nav" id="sidebar-nav"></nav>
   </aside>
 
@@ -53,6 +63,7 @@
 
         <div class="question-layout" id="question-layout">
           <div class="question-side">
+            <button id="flag-btn" class="flag-btn" onclick="toggleFlag()" title="Flag for review">&#9734;</button>
             <div class="question-watermark" id="q-watermark"></div>
             <div class="question-category" id="q-category"></div>
             <h2 class="question-text" id="q-text"></h2>
@@ -88,6 +99,20 @@
 
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  firebase.initializeApp({
+    apiKey: "AIzaSyDfHvbMUL5rk2780SLsTOXp5qluSy8pJJE",
+    authDomain: "turkish-quiz-game.firebaseapp.com",
+    databaseURL: "https://turkish-quiz-game-default-rtdb.firebaseio.com",
+    projectId: "turkish-quiz-game",
+    storageBucket: "turkish-quiz-game.firebasestorage.app",
+    messagingSenderId: "776111215553",
+    appId: "1:776111215553:web:16a66acc5bcc9d02a21540"
+  });
+  const db = firebase.database();
+</script>
 <script src="js/questions.js"></script>
 <script src="js/quiz.js"></script>
 </body>

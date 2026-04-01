@@ -6,7 +6,8 @@
       "Bash(vercel alias:*)",
       "Bash(npx vercel:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(firebase:*)"
     ]
   }
 }

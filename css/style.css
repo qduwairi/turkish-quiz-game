@@ -158,6 +158,72 @@ body {
   z-index: 9;
 }
 
+/* ── Flagged Section (Sidebar) ── */
+
+.sidebar-flagged-section {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+
+.sidebar-flagged .sidebar-unit-name {
+  color: var(--accent);
+}
+
+.sidebar-flagged.active {
+  border-left-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.flagged-actions {
+  display: flex;
+  gap: 0;
+  padding: 0 24px 8px;
+}
+
+.flagged-action-btn {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+
+.flagged-action-btn:hover {
+  color: var(--accent);
+}
+
+/* ── Flag Button (Question) ── */
+
+.flag-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--border);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.flag-btn:hover {
+  color: var(--accent);
+  transform: scale(1.15);
+}
+
+.flag-btn.active {
+  color: var(--accent);
+}
+
 /* ── Header ── */
 
 .quiz-header {
