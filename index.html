@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turkish Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Turkish</h2>
+      <p class="sidebar-subtitle">Select a unit</p>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+  </aside>
+
+  <!-- Sidebar toggle (mobile) -->
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+  <div class="sidebar-overlay hidden" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="quiz-container">
+
+      <!-- Start Screen -->
+      <div id="start-screen" class="start-screen">
+        <span class="ornament">&#10043; &#10043; &#10043;</span>
+        <h1 class="start-title">Turkish</h1>
+        <p class="start-subtitle">A Turkish language quiz</p>
+        <p class="start-meta">Select a unit from the sidebar to begin</p>
+      </div>
+
+      <!-- Quiz Screen -->
+      <div id="quiz-screen" class="hidden">
+        <div class="quiz-header">
+          <span class="quiz-title" id="quiz-title"></span>
+          <span class="score-display" id="score-display">Score: 0</span>
+        </div>
+
+        <div class="progress-row">
+          <span class="progress-fraction" id="progress-fraction"></span>
+          <div class="progress-line-container">
+            <div class="progress-line-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="question-layout" id="question-layout">
+          <div class="question-side">
+            <div class="question-watermark" id="q-watermark"></div>
+            <div class="question-category" id="q-category"></div>
+            <h2 class="question-text" id="q-text"></h2>
+          </div>
+
+          <div class="options-side">
+            <div class="options-list" id="options-list"></div>
+          </div>
+
+          <div id="feedback" class="feedback hidden"></div>
+          <button id="next-btn" class="next-btn hidden" onclick="advanceQuestion()">Next</button>
+        </div>
+      </div>
+
+      <!-- Results Screen -->
+      <div id="results-screen" class="results-screen hidden">
+        <span class="ornament">&#10043; &#10043; &#10043;</span>
+        <h2 class="results-title">Finished</h2>
+        <p class="results-subtitle">Your results</p>
+        <div class="results-score-display">
+          <span class="results-score-number" id="final-score-num"></span>
+          <span class="results-score-total" id="final-score-total"></span>
+        </div>
+        <div class="results-bar-container">
+          <div class="results-bar-fill" id="results-bar" style="width:0%"></div>
+        </div>
+        <p class="results-message" id="results-message"></p>
+        <button class="restart-btn" onclick="backToUnits()">Back to Units</button>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="js/questions.js"></script>
+<script src="js/quiz.js"></script>
+</body>
+</html>
