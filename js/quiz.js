@@ -108,6 +108,7 @@ function selectAnswer(index) {
   if (isCorrect) {
     score++;
     updateScore();
+    if (navigator.vibrate) navigator.vibrate(50);
 
     // Skip all animation — jump to next question instantly
     if (current < quizData.length - 1) {
