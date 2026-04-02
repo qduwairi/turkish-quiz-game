@@ -54,9 +54,10 @@ body {
   left: 0;
   width: var(--sidebar-width);
   height: 100vh;
+  height: 100dvh;
   background: var(--cream);
   border-right: 1px solid var(--border);
-  overflow-y: auto;
+  overflow-y: hidden;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -84,7 +85,19 @@ body {
 
 .sidebar-nav {
   flex: 1;
-  padding: 12px 0;
+  padding: 12px 0 80px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-level-header {
+  padding: 18px 24px 6px;
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
 }
 
 .sidebar-unit {
@@ -172,30 +185,6 @@ body {
 .sidebar-flagged.active {
   border-left-color: var(--accent);
   background: var(--accent-light);
-}
-
-.flagged-actions {
-  display: flex;
-  gap: 0;
-  padding: 0 24px 8px;
-}
-
-.flagged-action-btn {
-  font-family: var(--sans);
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: color 0.2s;
-}
-
-.flagged-action-btn:hover {
-  color: var(--accent);
 }
 
 /* ── Flag Button (Question) ── */

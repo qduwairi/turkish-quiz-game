@@ -92,39 +92,6 @@ function startFlaggedQuiz() {
   closeSidebar();
 }
 
-function exportFlagged() {
-  const flagged = getFlagged();
-  const blob = new Blob([JSON.stringify(flagged, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "flagged-cards.json";
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-function importFlagged(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (Array.isArray(data)) {
-        const existing = getFlagged();
-        const merged = [...existing];
-        data.forEach(card => {
-          if (card.question && !merged.some(c => c.question === card.question)) {
-            merged.push(card);
-          }
-        });
-        saveFlagged(merged);
-        updateFlaggedDeck();
-      }
-    } catch { /* invalid file */ }
-    event.target.value = "";
-  };
-  reader.readAsText(file);
-}
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -136,7 +103,16 @@ function shuffle(arr) {
 
 function init() {
   const nav = $("sidebar-nav");
+  let currentLevel = "";
   units.forEach((unit) => {
+    const level = unit.id.split("-")[0].toUpperCase();
+    if (level !== currentLevel) {
+      currentLevel = level;
+      const header = document.createElement("div");
+      header.className = "sidebar-level-header";
+      header.textContent = level;
+      nav.appendChild(header);
+    }
     const totalQuestions = unit.sections.reduce((sum, s) => sum + s.questions.length, 0);
     const btn = document.createElement("button");
     btn.className = "sidebar-unit";
@@ -202,10 +178,18 @@ function showQuestion() {
   const list = $("options-list");
   list.innerHTML = "";
 
-  data.options.forEach((opt, i) => {
+  // Shuffle options while tracking the correct answer
+  const indexed = data.options.map((opt, i) => ({ opt, orig: i }));
+  for (let i = indexed.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+  }
+  data._shuffledCorrect = indexed.findIndex(o => o.orig === data.correct);
+
+  indexed.forEach((item, i) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
-    btn.innerHTML = `<span class="option-letter">${LETTERS[i]})</span><span>${opt}</span>`;
+    btn.innerHTML = `<span class="option-letter">${LETTERS[i]})</span><span>${item.opt}</span>`;
     btn.addEventListener("click", () => selectAnswer(i));
     list.appendChild(btn);
   });
@@ -224,7 +208,8 @@ function selectAnswer(index) {
   const data = quizData[current];
   const buttons = document.querySelectorAll(".option-btn");
   const feedback = $("feedback");
-  const isCorrect = index === data.correct;
+  const correctIndex = data._shuffledCorrect;
+  const isCorrect = index === correctIndex;
 
   if (isCorrect) {
     score++;
@@ -242,7 +227,7 @@ function selectAnswer(index) {
   } else {
     buttons[index].classList.add("wrong");
     buttons.forEach((btn, i) => {
-      if (i === data.correct) btn.classList.add("reveal-correct");
+      if (i === correctIndex) btn.classList.add("reveal-correct");
     });
     feedback.textContent = `The answer was: ${data.options[data.correct]}`;
     feedback.className = "feedback wrong-fb";
