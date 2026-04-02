@@ -7,7 +7,17 @@
       "Bash(npx vercel:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(firebase:*)"
+      "Bash(firebase:*)",
+      "Bash(pip --version)",
+      "Bash(uv tool:*)",
+      "Bash(export PATH=\"$HOME/.local/bin:$PATH\")",
+      "Bash(specify init:*)",
+      "Bash(PYTHONIOENCODING=utf-8 NO_COLOR=1 specify init turkish-quiz-game --ai claude)",
+      "Bash(PYTHONIOENCODING=utf-8 NO_COLOR=1 specify init . --ai claude --no-interactive)",
+      "Bash(PYTHONIOENCODING=utf-8 NO_COLOR=1 specify init --help)",
+      "Bash(PYTHONIOENCODING=utf-8 NO_COLOR=1 specify init --here --ai claude --force)",
+      "Bash(taskkill //F //IM python.exe)",
+      "Bash(taskkill //F //IM python3.exe)"
     ]
   }
 }
