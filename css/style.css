@@ -9,9 +9,47 @@
   --red: #B83B3B;
   --red-light: rgba(184, 59, 59, 0.08);
   --border: #E2DDD5;
+  --overlay: rgba(0, 0, 0, 0.3);
+  --hover-subtle: rgba(0, 0, 0, 0.025);
+  --active-subtle: rgba(0, 0, 0, 0.02);
+  --nested-subtle: rgba(0, 0, 0, 0.015);
   --serif: 'Playfair Display', Georgia, serif;
   --sans: 'Source Sans 3', -apple-system, sans-serif;
   --sidebar-width: 260px;
+}
+
+[data-theme="light"] {
+  --cream: #FAF7F2;
+  --black: #1A1A1A;
+  --muted: #8C8577;
+  --accent: #C4572A;
+  --accent-light: rgba(196, 87, 42, 0.08);
+  --green: #2D7A4F;
+  --green-light: rgba(45, 122, 79, 0.08);
+  --red: #B83B3B;
+  --red-light: rgba(184, 59, 59, 0.08);
+  --border: #E2DDD5;
+  --overlay: rgba(0, 0, 0, 0.3);
+  --hover-subtle: rgba(0, 0, 0, 0.025);
+  --active-subtle: rgba(0, 0, 0, 0.02);
+  --nested-subtle: rgba(0, 0, 0, 0.015);
+}
+
+[data-theme="dark"] {
+  --cream: #1A1A1E;
+  --black: #E8E4DE;
+  --muted: #9A9590;
+  --accent: #D4673A;
+  --accent-light: rgba(212, 103, 58, 0.12);
+  --green: #3D9A5F;
+  --green-light: rgba(61, 154, 95, 0.12);
+  --red: #D04B4B;
+  --red-light: rgba(208, 75, 75, 0.12);
+  --border: #2E2E32;
+  --overlay: rgba(0, 0, 0, 0.5);
+  --hover-subtle: rgba(255, 255, 255, 0.04);
+  --active-subtle: rgba(255, 255, 255, 0.03);
+  --nested-subtle: rgba(255, 255, 255, 0.02);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -81,6 +119,34 @@ body {
   font-style: italic;
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.sidebar-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  border-radius: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
 }
 
 .sidebar-nav {
@@ -159,13 +225,13 @@ body {
 }
 
 .sidebar-unit-header:hover {
-  background: rgba(0, 0, 0, 0.025);
+  background: var(--hover-subtle);
   border-left-color: var(--border);
 }
 
 .sidebar-unit-header.expanded {
   border-left-color: var(--muted);
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--active-subtle);
 }
 
 .sidebar-unit-header-text {
@@ -203,7 +269,7 @@ body {
 .sidebar-unit-decks {
   display: none;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.015);
+  background: var(--nested-subtle);
   border-bottom: 1px solid var(--border);
 }
 
@@ -281,7 +347,7 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--overlay);
   z-index: 9;
 }
 
@@ -311,7 +377,7 @@ body {
   background: none;
   border: none;
   font-size: 1.4rem;
-  color: var(--border);
+  color: var(--muted);
   cursor: pointer;
   padding: 4px;
   line-height: 1;

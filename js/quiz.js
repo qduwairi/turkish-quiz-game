@@ -10,6 +10,24 @@ let flaggedCache = [];
 
 const $ = (id) => document.getElementById(id);
 
+// ── Theme Toggle ──
+
+function toggleTheme() {
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  updateThemeBtn();
+}
+
+function updateThemeBtn() {
+  var btn = $('theme-toggle');
+  if (!btn) return;
+  var theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  btn.innerHTML = theme === 'dark' ? '&#9788;' : '&#127769;';
+  btn.title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+}
+
 // ── Sound Engine ──
 
 let audioCtx = null;
@@ -203,6 +221,7 @@ function init() {
     nav.appendChild(decksContainer);
   });
   initFlaggedSync();
+  updateThemeBtn();
   updateMuteBtn();
   if (!isMuted()) {
     document.addEventListener("click", function initAudio() {

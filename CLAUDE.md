@@ -30,6 +30,7 @@ HTML5, CSS3, vanilla JavaScript (ES6+): Follow standard conventions
 
 - 001-gamification-sounds: Added HTML5, CSS3, vanilla JavaScript (ES6+) + None (Web Audio API is built-in)
 - 002-organize-deck-structure: Reorganize units into ~50-question decks with 3-level sidebar hierarchy
+- 003-dark-mode-toggle: Dark mode as default with visible toggle switch in sidebar header
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
