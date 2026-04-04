@@ -11,6 +11,67 @@ let flaggedCache = [];
 
 const $ = (id) => document.getElementById(id);
 
+// ── Sound Engine ──
+
+let audioCtx = null;
+const soundBuffers = {};
+
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function preloadSounds() {
+  const files = { correct: "sounds/correct.wav", wrong: "sounds/wrong.wav", complete: "sounds/complete.wav" };
+  Object.entries(files).forEach(([id, url]) => {
+    fetch(url)
+      .then((r) => r.arrayBuffer())
+      .then((buf) => getAudioContext().decodeAudioData(buf))
+      .then((decoded) => { soundBuffers[id] = decoded; })
+      .catch(() => {});
+  });
+}
+
+function playSound(id) {
+  if (isMuted()) return;
+  const buffer = soundBuffers[id];
+  if (!buffer) return;
+  try {
+    const ctx = getAudioContext();
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+  } catch (e) {}
+}
+
+function isMuted() {
+  return localStorage.getItem("sound-muted") === "true";
+}
+
+function setMuted(muted) {
+  localStorage.setItem("sound-muted", muted ? "true" : "false");
+}
+
+function toggleMute() {
+  const muted = !isMuted();
+  setMuted(muted);
+  updateMuteBtn();
+  if (!muted && !audioCtx) preloadSounds();
+}
+
+function updateMuteBtn() {
+  const btn = $("sound-toggle");
+  if (!btn) return;
+  btn.innerHTML = isMuted() ? "&#128263;" : "&#128266;";
+  btn.title = isMuted() ? "Unmute sounds" : "Mute sounds";
+}
+
 // ── Flagged Cards (Firebase) ──
 
 function initFlaggedSync() {
@@ -122,6 +183,13 @@ function init() {
     nav.appendChild(btn);
   });
   initFlaggedSync();
+  updateMuteBtn();
+  if (!isMuted()) {
+    document.addEventListener("click", function initAudio() {
+      preloadSounds();
+      document.removeEventListener("click", initAudio);
+    }, { once: true });
+  }
 }
 
 function setActiveUnit(unitId) {
@@ -214,6 +282,7 @@ function selectAnswer(index) {
   if (isCorrect) {
     score++;
     updateScore();
+    playSound("correct");
     if (navigator.vibrate) navigator.vibrate(50);
 
     // Skip all animation — jump to next question instantly
@@ -225,6 +294,7 @@ function selectAnswer(index) {
     }
     return;
   } else {
+    playSound("wrong");
     buttons[index].classList.add("wrong");
     buttons.forEach((btn, i) => {
       if (i === correctIndex) btn.classList.add("reveal-correct");
@@ -253,6 +323,7 @@ function advanceQuestion() {
 }
 
 function showResults() {
+  playSound("complete");
   $("quiz-screen").classList.add("hidden");
   $("results-screen").classList.remove("hidden");
 
