@@ -2,6 +2,9 @@ const units = [
   {
     id: "a1-unit1a",
     name: "A1 — Unit 1 (Part 1)",
+    decks: [
+      { name: "Greetings & Introductions & Copula & Locative Suffixes", sections: [0, 1, 2, 3, 4, 5] }
+    ],
     sections: [
       {
         name: "Greetings & Introductions",
@@ -94,6 +97,9 @@ const units = [
   {
     id: "a1-unit1b",
     name: "A1 — Unit 1 (Part 2)",
+    decks: [
+      { name: "Ordinal Numbers (Floors) & Polite Expressions (Dialogues)", sections: [0, 1, 2, 3, 4] }
+    ],
     sections: [
       {
         name: "Ordinal Numbers (Floors)",
@@ -180,6 +186,10 @@ const units = [
   {
     id: "a1-unit2",
     name: "A1 — Unit 2",
+    decks: [
+      { name: "Present Continuous -(I)yor & more", sections: [0, 1, 2] },
+      { name: "Verbs with Case Suffixes (Location Matching) & more", sections: [3, 4, 5, 6, 7, 8, 9] }
+    ],
     sections: [
       {
         name: "Present Continuous -(I)yor",
@@ -336,6 +346,11 @@ const units = [
   {
     id: "a1-unit3",
     name: "A1 — Unit 3",
+    decks: [
+      { name: "Possessive Suffixes (İyelik) & Possessive Dialogues", sections: [0, 1, 2] },
+      { name: "Choose the Correct Possessive & more", sections: [3, 4, 5, 6] },
+      { name: "Venn Diagram (Köy / Şehir / Both) & more", sections: [7, 8, 9, 10, 11] }
+    ],
     sections: [
       {
         name: "Possessive Suffixes (İyelik)",
@@ -511,6 +526,10 @@ const units = [
   {
     id: "a1-unit4",
     name: "A1 — Unit 4",
+    decks: [
+      { name: "Time Expressions & Verb Conjugation", sections: [0, 1] },
+      { name: "Match the Question & With (-le/-la) Dialogues", sections: [2, 3, 4, 5, 6, 7, 8, 9] }
+    ],
     sections: [
       {
         name: "Time Expressions",
@@ -638,6 +657,10 @@ const units = [
   {
     id: "a1-unit5",
     name: "A1 — Unit 5",
+    decks: [
+      { name: "Bir Şey Lazım mı? & Measure Words (Miktar Sözcükleri)", sections: [0, 1, 2] },
+      { name: "Cooking Verbs (Pişirme Fiilleri) & more", sections: [3, 4, 5, 6, 7, 8, 9] }
+    ],
     sections: [
       {
         name: "Bir Şey Lazım mı?",
@@ -789,6 +812,10 @@ const units = [
   {
     id: "a1-unit6",
     name: "A1 — Unit 6",
+    decks: [
+      { name: "Daily Life Vocabulary (Günlük Hayat) & more", sections: [0, 1, 2, 3, 4] },
+      { name: "Reading Comprehension — Trafik Kazası & -ki", sections: [5, 6, 7, 8, 9, 10] }
+    ],
     sections: [
       {
         name: "Daily Life Vocabulary (Günlük Hayat)",
@@ -944,6 +971,11 @@ const units = [
   {
     id: "a1-unit7",
     name: "A1 — Unit 7",
+    decks: [
+      { name: "Future Tense & Past / Present / Future of Olmak", sections: [0, 1, 2, 3, 4, 5, 6] },
+      { name: "Exclamations (Ünlemler) & -ecekti Conjugation", sections: [7, 8, 9, 10, 11] },
+      { name: "Unfulfilled Plans (Match Sentence) & -ce / -ca in Context (Story)", sections: [12, 13, 14, 15, 16, 17] }
+    ],
     sections: [
       {
         name: "Future Tense Fill in the Blank",
@@ -1193,6 +1225,9 @@ const units = [
   {
     id: "a1-unit8",
     name: "A1 — Unit 8",
+    decks: [
+      { name: "Past Tense (-mış) Conjugation & Emphasis Suffix (-DIr)", sections: [0, 1, 2, 3, 4, 5] }
+    ],
     sections: [
       {
         name: "Past Tense (-mış) Conjugation",
@@ -1277,6 +1312,10 @@ const units = [
   {
     id: "a1-unit9",
     name: "A1 — Unit 9",
+    decks: [
+      { name: "Aorist Tense (-(E/I)r) Conjugation & Common Aorist Expressions", sections: [0, 1, 2] },
+      { name: "Ability (-(y)Ebil- / -(y)EmE-) & more", sections: [3, 4, 5, 6, 7] }
+    ],
     sections: [
       {
         name: "Aorist Tense (-(E/I)r) Conjugation",
@@ -1404,6 +1443,10 @@ const units = [
   {
     id: "a1-unit10",
     name: "A1 — Unit 10",
+    decks: [
+      { name: "Media Vocabulary (Infinitives) & more", sections: [0, 1] },
+      { name: "Nominalization + Case Suffixes & Match the Ad to the Product", sections: [2, 3, 4, 5, 6, 7] }
+    ],
     sections: [
       {
         name: "Media Vocabulary (Infinitives)",
@@ -1522,6 +1565,10 @@ const units = [
   {
     id: "a1-unit11",
     name: "A1 — Unit 11",
+    decks: [
+      { name: "Reading: Match Paragraph to Topic (Sağlıklı Olmak) & more", sections: [0, 1, 2, 3, 4] },
+      { name: "Reading: Match Text to Order (Stres) & Idiomatic Converb Pairs", sections: [5, 6, 7, 8, 9, 10] }
+    ],
     sections: [
       {
         name: "Reading: Match Paragraph to Topic (Sağlıklı Olmak)",
@@ -1658,6 +1705,10 @@ const units = [
   {
     id: "a1-unit12",
     name: "A1 — Unit 12",
+    decks: [
+      { name: "Medical Vocabulary & için vs üzere (Choose Correct)", sections: [0, 1, 2, 3, 4, 5] },
+      { name: "Complete with için / üzere (Mixed) & Vocabulary Definitions", sections: [6, 7, 8] }
+    ],
     sections: [
       {
         name: "Medical Vocabulary",
@@ -1800,6 +1851,10 @@ const units = [
   {
     id: "b1-unit1",
     name: "B1 — Unit 1",
+    decks: [
+      { name: "Eşleyelim, tamamlayalım & Gereklilik Kipi - Dönüştürme", sections: [0, 1, 2, 3, 4, 5] },
+      { name: "Anlamca Yakın Kelimeler & Meslek Röportajları", sections: [6, 7, 8, 9, 10, 11] }
+    ],
     sections: [
       {
         name: "Eşleyelim, tamamlayalım",
@@ -1970,6 +2025,10 @@ const units = [
   {
     id: "b1-unit2",
     name: "B1 — Unit 2",
+    decks: [
+      { name: "Spor Terimleri Eşleştirme & Kendi - Dönüşlü Zamir", sections: [0, 1, 2, 3] },
+      { name: "Kendi Deyimleri & İşteş Fiil", sections: [4, 5, 6, 7, 8, 9, 10, 11] }
+    ],
     sections: [
       {
         name: "Spor Terimleri Eşleştirme",
@@ -2132,6 +2191,10 @@ const units = [
   {
     id: "b1-unit3",
     name: "B1 — Unit 3",
+    decks: [
+      { name: "Hayaller & Deyim Eşleştirme", sections: [0, 1, 2, 3, 4, 5] },
+      { name: "Keşke - Geçmiş Zaman (-sEydI) & Keşke + -ken Cümle Eşleştirme", sections: [6, 7, 8, 9, 10, 11, 12] }
+    ],
     sections: [
       {
         name: "Hayaller - Boşluk Doldurma",
@@ -2291,6 +2354,10 @@ const units = [
   {
     id: "b1-unit4",
     name: "B1 — Unit 4",
+    decks: [
+      { name: "Kıyafet Terimleri & -DEn beri / -DIr", sections: [0, 1, 2, 3] },
+      { name: "-DIk + iyelik + -IndEn beri & Zaman İfadeleri", sections: [4, 5, 6, 7, 8] }
+    ],
     sections: [
       {
         name: "Kıyafet Terimleri - Boşluk Doldurma",
@@ -2427,6 +2494,11 @@ const units = [
   {
     id: "b1-unit5",
     name: "B1 — Unit 5",
+    decks: [
+      { name: "Eğitim Şiiri & Koşul Cümlesi - Başlangıç", sections: [0, 1, 2, 3, 4] },
+      { name: "Koşul Cümlesi - Sonuç & İsim + Koşul Eki", sections: [5, 6] },
+      { name: "İsim + Koşul Eki - Sürdürme & Deyim Anlamları - İleri", sections: [7, 8, 9, 10, 11, 12, 13, 14] }
+    ],
     sections: [
       {
         name: "Eğitim Şiiri - Boşluk Doldurma",
@@ -2623,6 +2695,10 @@ const units = [
   {
     id: "b1-unit6",
     name: "B1 — Unit 6",
+    decks: [
+      { name: "Sanat Dalları Eşleştirme & Ettirgen Çatı + Anlam", sections: [0, 1, 2, 3] },
+      { name: "Çoklu Ettirgen Çatı & İfade Anlamları - Bilet", sections: [4, 5, 6, 7, 8, 9, 10, 11, 12] }
+    ],
     sections: [
       {
         name: "Sanat Dalları Eşleştirme",
@@ -2791,6 +2867,10 @@ const units = [
   {
     id: "b1-unit7",
     name: "B1 — Unit 7",
+    decks: [
+      { name: "Bilim ve Buluş Terimleri & Geri Dönüşüm - Yaratıcı Fikirler", sections: [0, 1, 2, 3, 4, 5, 6] },
+      { name: "tarafından / -CE + Edilgen Çatı & Doğru Çatı Seçimi - İleri", sections: [7, 8, 9, 10, 11, 12, 13, 14] }
+    ],
     sections: [
       {
         name: "Bilim ve Buluş Terimleri",
@@ -2969,6 +3049,10 @@ const units = [
   {
     id: "b1-unit8",
     name: "B1 — Unit 8",
+    decks: [
+      { name: "Hayvanlar Hakkında İlginç Bilgiler & more", sections: [0, 1, 2, 3] },
+      { name: "Doğaya Dönüş — Ortaçlar & Deyimler", sections: [4, 5, 6, 7, 8, 9, 10] }
+    ],
     sections: [
       {
         name: "Hayvanlar Hakkında İlginç Bilgiler",
@@ -3122,6 +3206,10 @@ const units = [
   {
     id: "b1-unit9",
     name: "B1 — Unit 9",
+    decks: [
+      { name: "Film Türleri & Ulaçlar - Cümle Tamamlama (Başlangıç)", sections: [0, 1, 2, 3] },
+      { name: "Eş Anlamlı Eşleştirme & Haftanın Filmleri", sections: [4, 5, 6, 7, 8, 9] }
+    ],
     sections: [
       {
         name: "Film Türleri",
@@ -3287,6 +3375,10 @@ const units = [
   {
     id: "b1-unit10",
     name: "B1 — Unit 10",
+    decks: [
+      { name: "Mitler & Dolaylı Aktarım", sections: [0, 1] },
+      { name: "Dolaylı Aktarım - Evet/Hayır Soruları & Doğru Anlamı Bulalım", sections: [2, 3, 4, 5, 6, 7, 8] }
+    ],
     sections: [
       {
         name: "Mitler - Yerleştirme",
@@ -3406,6 +3498,11 @@ const units = [
   {
     id: "b1-unit11",
     name: "B1 — Unit 11",
+    decks: [
+      { name: "Bayram Terimleri & Ulaçlar (-DIk için / -DIk + -IndEn)", sections: [0, 1, 2] },
+      { name: "Doğru Anlamı Bulalım - Bayram & Domates Festivali", sections: [3, 4, 5, 6, 7, 8] },
+      { name: "Tanım Eşleştirme - Fiiller & Deyimler - Yerleştirme (İleri)", sections: [9, 10, 11, 12, 13] }
+    ],
     sections: [
       {
         name: "Bayram Terimleri - Yerleştirme",
@@ -3592,6 +3689,11 @@ const units = [
   {
     id: "b1-unit12",
     name: "B1 — Unit 12",
+    decks: [
+      { name: "Farklılıklar & Eş Anlamlı + Doğru Anlam", sections: [0, 1, 2, 3, 4] },
+      { name: "Doğru Anlamı Bulalım & Karşıtlık (-sE dE / bile / rağmen)", sections: [5, 6, 7, 8, 9, 10, 11, 12] },
+      { name: "Karşıtlık - Tümce Kurma & Çok Anlamlı Kelimeler - garip", sections: [13, 14, 15] }
+    ],
     sections: [
       {
         name: "Farklılıklar - Yerleştirme",
