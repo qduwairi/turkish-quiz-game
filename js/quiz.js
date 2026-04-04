@@ -2,7 +2,6 @@ const LETTERS = ["a", "b", "c", "d"];
 const EXIT_DURATION = 400;
 
 let quizData = [];
-let activeUnitId = null;
 let current = 0;
 let score = 0;
 let answered = false;
@@ -136,7 +135,7 @@ function startFlaggedQuiz() {
   if (flagged.length === 0) return;
 
   isFlaggedMode = true;
-  setActiveUnit(null);
+  setActiveDeck(null);
   $("flagged-deck-btn").classList.add("active");
 
   quizData = shuffle([...flagged]);
@@ -174,13 +173,34 @@ function init() {
       header.textContent = level;
       nav.appendChild(header);
     }
+
     const totalQuestions = unit.sections.reduce((sum, s) => sum + s.questions.length, 0);
-    const btn = document.createElement("button");
-    btn.className = "sidebar-unit";
-    btn.id = `unit-${unit.id}`;
-    btn.innerHTML = `<span class="sidebar-unit-name">${unit.name}</span><span class="sidebar-unit-meta">${unit.sections.length} sections · ${totalQuestions} questions</span>`;
-    btn.addEventListener("click", () => startQuiz(unit));
-    nav.appendChild(btn);
+    const decks = unit.decks || [{ name: unit.name, sections: unit.sections.map((_, i) => i) }];
+
+    // Unit header (collapsible)
+    const unitHeader = document.createElement("button");
+    unitHeader.className = "sidebar-unit-header";
+    unitHeader.id = `unit-header-${unit.id}`;
+    unitHeader.innerHTML = `<div class="sidebar-unit-header-text"><span class="sidebar-unit-header-name">${unit.name}</span><span class="sidebar-unit-header-meta">${decks.length} deck${decks.length !== 1 ? "s" : ""} · ${totalQuestions} questions</span></div><span class="sidebar-unit-chevron">&#9656;</span>`;
+    unitHeader.addEventListener("click", () => toggleUnit(unit.id));
+    nav.appendChild(unitHeader);
+
+    // Deck container (hidden by default)
+    const decksContainer = document.createElement("div");
+    decksContainer.className = "sidebar-unit-decks";
+    decksContainer.id = `unit-decks-${unit.id}`;
+
+    decks.forEach((deck, di) => {
+      const deckQuestions = deck.sections.reduce((sum, si) => sum + unit.sections[si].questions.length, 0);
+      const btn = document.createElement("button");
+      btn.className = "sidebar-deck";
+      btn.id = `deck-${unit.id}-${di}`;
+      btn.innerHTML = `<span class="sidebar-deck-name">${deck.name}</span><span class="sidebar-deck-meta">${deckQuestions} questions</span>`;
+      btn.addEventListener("click", () => startQuiz(unit, di));
+      decksContainer.appendChild(btn);
+    });
+
+    nav.appendChild(decksContainer);
   });
   initFlaggedSync();
   updateMuteBtn();
@@ -192,22 +212,43 @@ function init() {
   }
 }
 
-function setActiveUnit(unitId) {
-  document.querySelectorAll(".sidebar-unit").forEach((btn) => btn.classList.remove("active"));
-  if (unitId) $(`unit-${unitId}`).classList.add("active");
-  activeUnitId = unitId;
+function toggleUnit(unitId) {
+  const header = $(`unit-header-${unitId}`);
+  const container = $(`unit-decks-${unitId}`);
+  const isOpen = container.classList.contains("open");
+  if (isOpen) {
+    container.classList.remove("open");
+    header.classList.remove("expanded");
+  } else {
+    container.classList.add("open");
+    header.classList.add("expanded");
+  }
 }
 
-function startQuiz(unit) {
+function setActiveDeck(deckId) {
+  document.querySelectorAll(".sidebar-deck").forEach((btn) => btn.classList.remove("active"));
+  if (deckId) {
+    const el = $(deckId);
+    if (el) el.classList.add("active");
+  }
+}
+
+function startQuiz(unit, deckIndex) {
   isFlaggedMode = false;
   $("flagged-deck-btn").classList.remove("active");
-  setActiveUnit(unit.id);
 
-  quizData = shuffle(unit.sections.flatMap((section) =>
-    section.questions.map((q) => ({ ...q, category: section.name }))
-  ));
+  const decks = unit.decks || [{ name: unit.name, sections: unit.sections.map((_, i) => i) }];
+  const deck = decks[deckIndex != null ? deckIndex : 0];
+  const deckId = `deck-${unit.id}-${deckIndex != null ? deckIndex : 0}`;
 
-  $("quiz-title").textContent = unit.name;
+  setActiveDeck(deckId);
+
+  quizData = shuffle(deck.sections.flatMap((si) => {
+    const section = unit.sections[si];
+    return section.questions.map((q) => ({ ...q, category: section.name }));
+  }));
+
+  $("quiz-title").textContent = deck.name;
   $("start-screen").classList.add("hidden");
   $("results-screen").classList.add("hidden");
   $("quiz-screen").classList.remove("hidden");
@@ -218,7 +259,6 @@ function startQuiz(unit) {
   updateScore();
   showQuestion();
 
-  // Close sidebar on mobile after selection
   closeSidebar();
 }
 
@@ -349,7 +389,7 @@ function backToUnits() {
   $("results-screen").classList.add("hidden");
   $("results-bar").style.width = "0%";
   $("start-screen").classList.remove("hidden");
-  setActiveUnit(null);
+  setActiveDeck(null);
   isFlaggedMode = false;
   $("flagged-deck-btn").classList.remove("active");
   updateFlaggedDeck();
