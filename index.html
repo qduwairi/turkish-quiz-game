@@ -7,6 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
 
@@ -15,8 +21,13 @@
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <h2 class="sidebar-title">Turkish</h2>
-      <p class="sidebar-subtitle">Select a unit</p>
+      <div class="sidebar-header-row">
+        <div>
+          <h2 class="sidebar-title">Turkish</h2>
+          <p class="sidebar-subtitle">Select a unit</p>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Switch theme">&#127769;</button>
+      </div>
     </div>
     <div id="flagged-section" class="sidebar-flagged-section hidden">
       <button class="sidebar-unit sidebar-flagged" id="flagged-deck-btn" onclick="startFlaggedQuiz()">
