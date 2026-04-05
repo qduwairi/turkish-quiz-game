@@ -829,6 +829,93 @@ body {
   transform: translateY(-1px);
 }
 
+/* ── Why? Explainer ── */
+
+.why-btn {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 12px;
+  padding: 8px 24px;
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 44px;
+  min-height: 44px;
+  animation: editorial-fade 0.3s ease;
+}
+
+.why-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.explainer-section {
+  grid-column: 1 / -1;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.3s ease;
+  margin-top: 0;
+}
+
+.explainer-section.visible {
+  max-height: 150px;
+  overflow-y: auto;
+  opacity: 1;
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--hover-subtle);
+  border-left: 3px solid var(--border);
+  border-radius: 0 4px 4px 0;
+}
+
+.explainer-text {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--black);
+  margin: 0;
+}
+
+.explainer-loading {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  animation: explainer-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes explainer-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.explainer-section.explainer-warning {
+  border-left-color: #D4963A;
+  background: rgba(212, 150, 58, 0.08);
+}
+
+.explainer-section.explainer-warning .explainer-text::before {
+  content: "⚠ ";
+}
+
+[data-theme="dark"] .explainer-section.explainer-warning {
+  background: rgba(212, 150, 58, 0.12);
+}
+
+.explainer-error {
+  color: var(--red);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* ── Animations ── */
 
 @keyframes editorial-fade {
@@ -895,4 +982,7 @@ body {
   .question-text { font-size: 1.35rem; }
   .start-title { font-size: 2.2rem; }
   .results-score-number { font-size: 3.5rem; }
+
+  .explainer-section.visible { padding: 10px 12px; }
+  .why-btn { padding: 8px 20px; font-size: 0.75rem; }
 }

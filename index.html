@@ -82,6 +82,11 @@
           </div>
 
           <div id="feedback" class="feedback hidden"></div>
+          <button id="why-btn" class="why-btn hidden" onclick="handleWhyClick()">Why?</button>
+          <div id="explainer-section" class="explainer-section">
+            <div id="explainer-loading" class="explainer-loading hidden">Thinking…</div>
+            <p id="explainer-text" class="explainer-text hidden"></p>
+          </div>
           <button id="next-btn" class="next-btn hidden" onclick="advanceQuestion()">Next</button>
         </div>
       </div>
@@ -109,6 +114,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
 <script>
   firebase.initializeApp({
     apiKey: "AIzaSyDfHvbMUL5rk2780SLsTOXp5qluSy8pJJE",

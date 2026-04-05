@@ -8,6 +8,12 @@ let answered = false;
 let isFlaggedMode = false;
 let flaggedCache = [];
 
+// Explainer state
+let explainerCache = null;   // { explanation, hasWarning } or null
+let explainerLoading = false;
+let explainerExpanded = false;
+let explainerAborted = false;
+
 const $ = (id) => document.getElementById(id);
 
 // ── Theme Toggle ──
@@ -302,6 +308,17 @@ function showQuestion() {
   $("feedback").classList.add("hidden");
   $("next-btn").classList.add("hidden");
 
+  // Reset explainer state
+  explainerAborted = true;
+  explainerCache = null;
+  explainerLoading = false;
+  explainerExpanded = false;
+  $("why-btn").classList.add("hidden");
+  $("explainer-section").classList.remove("visible", "explainer-warning");
+  $("explainer-text").classList.add("hidden");
+  $("explainer-text").textContent = "";
+  $("explainer-loading").classList.add("hidden");
+
   const list = $("options-list");
   list.innerHTML = "";
 
@@ -366,7 +383,82 @@ function selectAnswer(index) {
     if (i !== index && i !== data.correct) btn.classList.add("disabled");
   });
 
+  $("why-btn").classList.remove("hidden");
   $("next-btn").classList.remove("hidden");
+}
+
+function handleWhyClick() {
+  var section = $("explainer-section");
+  var textEl = $("explainer-text");
+  var loadingEl = $("explainer-loading");
+
+  // Toggle: if cached and visible, collapse (US2)
+  if (explainerCache && explainerExpanded) {
+    section.classList.remove("visible");
+    explainerExpanded = false;
+    return;
+  }
+
+  // Toggle: if cached and hidden, re-expand without new API call (US2)
+  if (explainerCache && !explainerExpanded) {
+    section.classList.add("visible");
+    explainerExpanded = true;
+    return;
+  }
+
+  // Debounce: if already loading, ignore
+  if (explainerLoading) return;
+
+  // Fetch explanation from Cloud Function
+  explainerLoading = true;
+  explainerAborted = false;
+  loadingEl.classList.remove("hidden");
+  textEl.classList.add("hidden");
+  textEl.textContent = "";
+  section.classList.add("visible");
+  section.classList.remove("explainer-warning");
+  explainerExpanded = true;
+
+  var data = quizData[current];
+  var requestGeneration = current; // track which question this request is for
+
+  // 10-second client-side timeout
+  var timedOut = false;
+  var timeoutId = setTimeout(function () {
+    timedOut = true;
+    explainerLoading = false;
+    loadingEl.classList.add("hidden");
+    textEl.innerHTML = '<span class="explainer-error">Timed out. Tap Why? to retry.</span>';
+    textEl.classList.remove("hidden");
+  }, 10000);
+
+  firebase.functions().httpsCallable("explainAnswer")({
+    question: data.question,
+    options: data.options,
+    correct: data.correct
+  }).then(function (result) {
+    clearTimeout(timeoutId);
+    if (timedOut || explainerAborted) return;
+
+    explainerLoading = false;
+    explainerCache = result.data;
+    loadingEl.classList.add("hidden");
+    textEl.textContent = result.data.explanation;
+    textEl.classList.remove("hidden");
+
+    // US3: warning styling
+    if (result.data.hasWarning) {
+      section.classList.add("explainer-warning");
+    }
+  }).catch(function (err) {
+    clearTimeout(timeoutId);
+    if (timedOut || explainerAborted) return;
+
+    explainerLoading = false;
+    loadingEl.classList.add("hidden");
+    textEl.innerHTML = '<span class="explainer-error">Could not load explanation. Tap Why? to retry.</span>';
+    textEl.classList.remove("hidden");
+  });
 }
 
 function advanceQuestion() {

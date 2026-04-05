@@ -1,1 +1,8 @@
 .vercel
+node_modules/
+functions/node_modules/
+functions/.env
+.env
+firebase-debug.log
+ui-debug.log
+.firebase/

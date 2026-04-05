@@ -1,25 +1,28 @@
 <!--
 Sync Impact Report
 ═══════════════════
-Version change: N/A → 1.0.0 (initial ratification)
+Version change: 1.0.0 → 1.1.0
 
 Added sections:
-  - Principle I: Content Accuracy
-  - Principle II: Progressive Difficulty
-  - Principle III: Simplicity & Vanilla Stack
-  - Principle IV: Responsive & Accessible UI
-  - Principle V: Data Persistence
-  - Section: Technology Constraints
-  - Section: Development Workflow
-  - Governance
+  - Principle V §b: Firebase Cloud Functions exception
+  - Technology Constraints: AI service dependency allowance
 
-Removed sections: None (initial version)
+Modified sections:
+  - Principle III: Added Firebase Cloud Functions as permitted server-side exception
+  - Technology Constraints: Added AI service as permitted external dependency via Firebase Cloud Functions
+  - No server-side code constraint: Scoped exception for Firebase Cloud Functions
+
+Removed sections: None
+
+Rationale: Feature 004-card-why-explainer requires AI-generated explanations with
+answer correctness validation. This cannot be achieved with vanilla client-side code.
+Firebase Cloud Functions keep the proxy within the existing Firebase ecosystem.
+The AI service is the only new external dependency.
 
 Templates requiring updates:
-  - .specify/templates/plan-template.md — ✅ no updates needed (generic, references constitution dynamically)
+  - .specify/templates/plan-template.md — ✅ no updates needed (generic)
   - .specify/templates/spec-template.md — ✅ no updates needed (generic)
   - .specify/templates/tasks-template.md — ✅ no updates needed (generic)
-  - .specify/templates/commands/ — ✅ no command files exist
 
 Follow-up TODOs: None
 -->
@@ -53,8 +56,11 @@ no build tools, bundlers, transpilers, or frontend frameworks. Adding
 a dependency (library, CDN script, or npm package) MUST be justified
 by a concrete need that cannot be met with a reasonable amount of
 vanilla code. Firebase is the sole permitted external service
-dependency. This principle exists to keep the project approachable
-and instantly runnable by opening `index.html` or serving statically.
+dependency. Firebase Cloud Functions are permitted as the sole
+exception to the client-side-only constraint, strictly for proxying
+requests to external AI services where API keys must remain secret.
+This principle exists to keep the project approachable and instantly
+runnable by opening `index.html` or serving statically.
 
 ### IV. Responsive & Accessible UI
 
@@ -84,7 +90,11 @@ Schema changes to the Firebase data model MUST be reflected in
 - **Fonts**: Google Fonts loaded via CDN (Playfair Display,
   Source Sans 3).
 - **No server-side code**: The project MUST remain a purely
-  client-side application.
+  client-side application, with the sole exception of Firebase
+  Cloud Functions used as AI service proxies.
+- **AI Service**: One external AI API (e.g., Anthropic Claude) is
+  permitted, accessed exclusively through Firebase Cloud Functions.
+  The API key MUST NOT be exposed in client-side code.
 
 ## Development Workflow
 
@@ -119,4 +129,4 @@ amended first (with version bump) before the change is merged.
 architecture, adds dependencies, or modifies quiz content structure
 MUST reference the relevant constitution principle in its description.
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-04
+**Version**: 1.1.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
