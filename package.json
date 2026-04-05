@@ -1,0 +1,11 @@
+{
+  "name": "turkish-quiz-game",
+  "private": true,
+  "scripts": {
+    "dev": "node dev-server.js",
+    "deploy": "cd functions && npm install && cd .. && firebase deploy --only functions"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.52.0"
+  }
+}
