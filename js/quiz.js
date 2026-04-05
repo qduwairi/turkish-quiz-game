@@ -432,22 +432,29 @@ function handleWhyClick() {
     textEl.classList.remove("hidden");
   }, 10000);
 
-  firebase.functions().httpsCallable("explainAnswer")({
-    question: data.question,
-    options: data.options,
-    correct: data.correct
+  fetch("/api/explain-answer", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question: data.question,
+      options: data.options,
+      correct: data.correct
+    })
+  }).then(function (res) {
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
   }).then(function (result) {
     clearTimeout(timeoutId);
     if (timedOut || explainerAborted) return;
 
     explainerLoading = false;
-    explainerCache = result.data;
+    explainerCache = result;
     loadingEl.classList.add("hidden");
-    textEl.textContent = result.data.explanation;
+    textEl.textContent = result.explanation;
     textEl.classList.remove("hidden");
 
     // US3: warning styling
-    if (result.data.hasWarning) {
+    if (result.hasWarning) {
       section.classList.add("explainer-warning");
     }
   }).catch(function (err) {

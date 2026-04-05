@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2026-04-05
 
 ## Active Technologies
+- HTML5, CSS3, vanilla JavaScript (ES6+), Node.js 20 (serverless function) + @anthropic-ai/sdk (serverless function only) (005-fix-why-button-cors)
+- Firebase Realtime Database (existing, unchanged) (005-fix-why-button-cors)
 
 - HTML5, CSS3, vanilla JavaScript (ES6+) + None (Web Audio API is built-in) (001-gamification-sounds)
 - Firebase Cloud Functions v2, Anthropic Claude API (Haiku) (004-card-why-explainer)
@@ -31,11 +33,10 @@ npm test; npm run lint
 HTML5, CSS3, vanilla JavaScript (ES6+): Follow standard conventions
 
 ## Recent Changes
+- 005-fix-why-button-cors: Added HTML5, CSS3, vanilla JavaScript (ES6+), Node.js 20 (serverless function) + @anthropic-ai/sdk (serverless function only)
 
 - 001-gamification-sounds: Added HTML5, CSS3, vanilla JavaScript (ES6+) + None (Web Audio API is built-in)
 - 002-organize-deck-structure: Reorganize units into ~50-question decks with 3-level sidebar hierarchy
-- 003-dark-mode-toggle: Dark mode as default with visible toggle switch in sidebar header
-- 004-card-why-explainer: AI-powered "Why?" explainer on incorrect answers via Firebase Cloud Function + Claude Haiku
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

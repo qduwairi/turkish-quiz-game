@@ -1,0 +1,7 @@
+{
+  "name": "turkish-quiz-api",
+  "description": "Vercel serverless functions for Turkish Quiz Game",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0"
+  }
+}
