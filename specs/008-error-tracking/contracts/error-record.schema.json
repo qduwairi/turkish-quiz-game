@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ErrorRecord",
+  "description": "A single client-captured error as persisted under /errors/{id} in Firebase Realtime Database for feature 008-error-tracking.",
+  "type": "object",
+  "required": [
+    "message",
+    "stack",
+    "signature",
+    "kind",
+    "operation",
+    "page",
+    "timestamp",
+    "env",
+    "sessionId",
+    "breadcrumbs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "message": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "stack": {
+      "type": ["string", "null"],
+      "maxLength": 4096
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["js_error", "unhandled_rejection", "network_failure"]
+    },
+    "operation": {
+      "type": ["string", "null"],
+      "maxLength": 100
+    },
+    "page": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "env": {
+      "type": "object",
+      "required": ["browser", "os", "viewport"],
+      "additionalProperties": false,
+      "properties": {
+        "browser": {
+          "type": "string",
+          "enum": ["chrome", "firefox", "safari", "edge", "other"]
+        },
+        "os": {
+          "type": "string",
+          "enum": ["windows", "macos", "linux", "android", "ios", "other"]
+        },
+        "viewport": {
+          "type": "string",
+          "pattern": "^[0-9]+x[0-9]+$"
+        }
+      }
+    },
+    "sessionId": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "breadcrumbs": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["t", "msg"],
+        "additionalProperties": false,
+        "properties": {
+          "t": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "msg": {
+            "type": "string",
+            "maxLength": 120
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "network_failure" } }
+      },
+      "then": {
+        "properties": { "operation": { "type": "string", "minLength": 1 } }
+      },
+      "else": {
+        "properties": { "operation": { "type": "null" } }
+      }
+    }
+  ]
+}
