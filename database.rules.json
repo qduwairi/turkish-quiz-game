@@ -1,6 +1,14 @@
 {
   "rules": {
     ".read": true,
-    ".write": true
+    ".write": true,
+    "errors": {
+      ".read": false,
+      ".write": false,
+      "$errorId": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['message', 'signature', 'kind', 'page', 'timestamp', 'sessionId', 'breadcrumbs']) && newData.child('message').isString() && newData.child('message').val().length <= 500 && newData.child('signature').isString() && newData.child('kind').isString() && (newData.child('kind').val() == 'js_error' || newData.child('kind').val() == 'unhandled_rejection' || newData.child('kind').val() == 'network_failure') && newData.child('page').isString() && newData.child('page').val().length <= 500 && newData.child('timestamp').isNumber() && newData.child('sessionId').isString()"
+      }
+    }
   }
 }

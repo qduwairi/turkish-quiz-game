@@ -9,6 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-04-10
 - Firebase Realtime Database — existing `flagged` node (array of `{question, options, correct, category}` objects); unchanged schema (006-suspend-flagged-cards)
 - HTML5, CSS3, vanilla JavaScript (ES6+) — no build tools (per Constitution III) + None added. Firebase Realtime Database client SDK already loaded in `index.html` remains unchanged. (007-retry-wrong-cards)
 - In-memory session state only for the retry pool. No persistence across sessions (per FR-014). No Firebase schema changes. (007-retry-wrong-cards)
+- HTML5, CSS3, vanilla JavaScript (ES6+) — no build tools (per Constitution III) + Firebase Realtime Database client SDK (already loaded in `index.html`); no new dependencies (008-error-tracking)
+- Firebase Realtime Database — new `errors` subtree; `database.rules.json` extended with restricted rules for that subtree (008-error-tracking)
 
 - HTML5, CSS3, vanilla JavaScript (ES6+) + None (Web Audio API is built-in) (001-gamification-sounds)
 - Firebase Cloud Functions v2, Anthropic Claude API (Haiku) (004-card-why-explainer)
@@ -37,9 +39,9 @@ npm test; npm run lint
 HTML5, CSS3, vanilla JavaScript (ES6+): Follow standard conventions
 
 ## Recent Changes
+- 008-error-tracking: Added HTML5, CSS3, vanilla JavaScript (ES6+) — no build tools (per Constitution III) + Firebase Realtime Database client SDK (already loaded in `index.html`); no new dependencies
 - 007-retry-wrong-cards: Added HTML5, CSS3, vanilla JavaScript (ES6+) — no build tools (per Constitution III) + None added. Firebase Realtime Database client SDK already loaded in `index.html` remains unchanged.
 - 006-suspend-flagged-cards: Added HTML5, CSS3, vanilla JavaScript (ES6+) — no build tools (per Constitution III) + None added. Existing: Firebase Realtime Database client SDK (already loaded in `index.html`)
-- 005-fix-why-button-cors: Added HTML5, CSS3, vanilla JavaScript (ES6+), Node.js 20 (serverless function) + @anthropic-ai/sdk (serverless function only)
 
 
 <!-- MANUAL ADDITIONS START -->

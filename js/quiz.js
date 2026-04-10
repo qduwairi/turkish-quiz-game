@@ -117,9 +117,12 @@ function getFlagged() {
   return flaggedCache;
 }
 
-function saveFlagged(arr) {
+function saveFlagged(arr, operationName) {
   flaggedCache = arr;
-  db.ref("flagged").set(arr);
+  var p = db.ref("flagged").set(arr);
+  if (window.errorTracker && window.errorTracker.trackedCall) {
+    window.errorTracker.trackedCall(operationName || "flag_card", p).catch(function () {});
+  }
 }
 
 function isFlagged(questionText) {
@@ -140,12 +143,13 @@ function toggleFlag() {
   const flagged = [...flaggedCache];
   const idx = flagged.findIndex(c => c.question === data.question);
   const wasFlagged = idx >= 0;
+  if (window.errorTracker) window.errorTracker.breadcrumb("flag_toggle q=" + current);
   if (wasFlagged) {
     flagged.splice(idx, 1);
   } else {
     flagged.push({ question: data.question, options: data.options, correct: data.correct, category: data.category });
   }
-  saveFlagged(flagged);
+  saveFlagged(flagged, wasFlagged ? "unflag_card" : "flag_card");
   updateFlagBtn();
   updateFlaggedDeck();
 
@@ -196,6 +200,7 @@ function updateFlaggedDeck() {
 function startFlaggedQuiz() {
   const flagged = getFlagged();
   if (flagged.length === 0) return;
+  if (window.errorTracker) window.errorTracker.breadcrumb("start_deck flagged");
 
   hideDeckEmptyState();
   isFlaggedMode = true;
@@ -381,6 +386,7 @@ function startQuiz(unit, deckIndex) {
   const decks = unit.decks || [{ name: unit.name, sections: unit.sections.map((_, i) => i) }];
   const deck = decks[deckIndex != null ? deckIndex : 0];
   const deckId = `deck-${unit.id}-${deckIndex != null ? deckIndex : 0}`;
+  if (window.errorTracker) window.errorTracker.breadcrumb("start_deck " + deckId);
 
   // Filter suspended (flagged) cards before composing the session.
   const available = availableCardsForDeck(unit, deck);
@@ -509,6 +515,10 @@ function selectAnswer(index) {
   const correctIndex = data._shuffledCorrect;
   const isCorrect = index === correctIndex;
 
+  if (window.errorTracker) {
+    window.errorTracker.breadcrumb("answer q=" + current + " correct=" + (isCorrect ? "true" : "false"));
+  }
+
   if (isCorrect) {
     if (!retryMode) {
       score++;
@@ -599,7 +609,7 @@ function handleWhyClick() {
     textEl.classList.remove("hidden");
   }, 10000);
 
-  fetch("/api/explain-answer", {
+  var explainRequest = fetch("/api/explain-answer", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -624,7 +634,13 @@ function handleWhyClick() {
     if (result.hasWarning) {
       section.classList.add("explainer-warning");
     }
-  }).catch(function (err) {
+  });
+
+  var explainTracked = (window.errorTracker && window.errorTracker.trackedCall)
+    ? window.errorTracker.trackedCall("fetch_explanation", explainRequest)
+    : explainRequest;
+
+  explainTracked.catch(function (err) {
     clearTimeout(timeoutId);
     if (timedOut || explainerAborted) return;
 
