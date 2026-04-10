@@ -710,6 +710,21 @@ body {
   letter-spacing: 1px;
 }
 
+.deck-empty-msg {
+  margin: 32px auto 0;
+  max-width: 480px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  color: var(--black);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
 /* ── Results Screen ── */
 
 .results-screen {

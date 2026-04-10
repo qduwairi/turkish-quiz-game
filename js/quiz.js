@@ -101,6 +101,7 @@ function initFlaggedSync() {
   db.ref("flagged").on("value", (snapshot) => {
     flaggedCache = snapshot.val() || [];
     updateFlaggedDeck();
+    renderSidebarCounts();
     if (!document.querySelector("#quiz-screen.hidden") && quizData.length > 0) {
       updateFlagBtn();
     }
@@ -120,11 +121,21 @@ function isFlagged(questionText) {
   return flaggedCache.some(c => c.question === questionText);
 }
 
+// Compose the effective card list for a deck, excluding any card currently
+// in flaggedCache (suspended). Pure read of unit + flaggedCache.
+function availableCardsForDeck(unit, deck) {
+  return deck.sections.flatMap((si) => {
+    const section = unit.sections[si];
+    return section.questions.map((q) => ({ ...q, category: section.name }));
+  }).filter((q) => !isFlagged(q.question));
+}
+
 function toggleFlag() {
   const data = quizData[current];
   const flagged = [...flaggedCache];
   const idx = flagged.findIndex(c => c.question === data.question);
-  if (idx >= 0) {
+  const wasFlagged = idx >= 0;
+  if (wasFlagged) {
     flagged.splice(idx, 1);
   } else {
     flagged.push({ question: data.question, options: data.options, correct: data.correct, category: data.category });
@@ -132,6 +143,19 @@ function toggleFlag() {
   saveFlagged(flagged);
   updateFlagBtn();
   updateFlaggedDeck();
+
+  // Mid-session drop: if the user just flagged the current card during a normal
+  // deck session, remove it from the in-progress queue and advance (spec FR-003).
+  // In Flagged Cards mode, never mutate quizData — unflag takes effect on next
+  // session start only (spec FR-005a).
+  if (!wasFlagged && !isFlaggedMode) {
+    quizData.splice(current, 1);
+    if (quizData.length === 0 || current >= quizData.length) {
+      showResults();
+    } else {
+      showQuestion();
+    }
+  }
 }
 
 function updateFlagBtn() {
@@ -158,6 +182,7 @@ function startFlaggedQuiz() {
   const flagged = getFlagged();
   if (flagged.length === 0) return;
 
+  hideDeckEmptyState();
   isFlaggedMode = true;
   setActiveDeck(null);
   $("flagged-deck-btn").classList.add("active");
@@ -227,6 +252,7 @@ function init() {
     nav.appendChild(decksContainer);
   });
   initFlaggedSync();
+  renderSidebarCounts();
   updateThemeBtn();
   updateMuteBtn();
   if (!isMuted()) {
@@ -235,6 +261,29 @@ function init() {
       document.removeEventListener("click", initAudio);
     }, { once: true });
   }
+}
+
+// Recompute and update sidebar deck/unit count labels to reflect the current
+// suspension state (flaggedCache). Does NOT rebuild DOM or detach listeners.
+function renderSidebarCounts() {
+  units.forEach((unit) => {
+    const decks = unit.decks || [{ name: unit.name, sections: unit.sections.map((_, i) => i) }];
+    let unitTotal = 0;
+    decks.forEach((deck, di) => {
+      const available = availableCardsForDeck(unit, deck).length;
+      unitTotal += available;
+      const deckBtn = $(`deck-${unit.id}-${di}`);
+      if (deckBtn) {
+        const meta = deckBtn.querySelector(".sidebar-deck-meta");
+        if (meta) meta.textContent = `${available} questions`;
+      }
+    });
+    const unitHeader = $(`unit-header-${unit.id}`);
+    if (unitHeader) {
+      const meta = unitHeader.querySelector(".sidebar-unit-header-meta");
+      if (meta) meta.textContent = `${decks.length} deck${decks.length !== 1 ? "s" : ""} · ${unitTotal} questions`;
+    }
+  });
 }
 
 function toggleUnit(unitId) {
@@ -259,19 +308,29 @@ function setActiveDeck(deckId) {
 }
 
 function startQuiz(unit, deckIndex) {
-  isFlaggedMode = false;
-  $("flagged-deck-btn").classList.remove("active");
-
   const decks = unit.decks || [{ name: unit.name, sections: unit.sections.map((_, i) => i) }];
   const deck = decks[deckIndex != null ? deckIndex : 0];
   const deckId = `deck-${unit.id}-${deckIndex != null ? deckIndex : 0}`;
 
+  // Filter suspended (flagged) cards before composing the session.
+  const available = availableCardsForDeck(unit, deck);
+
+  // Empty-deck short-circuit: every card in this deck is currently flagged.
+  // Do not switch screens or reset quiz state; surface a message and let the
+  // user pick another deck from the still-open sidebar.
+  if (available.length === 0) {
+    showDeckEmptyState(deck);
+    return;
+  }
+
+  // Success path: entering a real session — clear any lingering empty-state msg.
+  hideDeckEmptyState();
+
+  isFlaggedMode = false;
+  $("flagged-deck-btn").classList.remove("active");
   setActiveDeck(deckId);
 
-  quizData = shuffle(deck.sections.flatMap((si) => {
-    const section = unit.sections[si];
-    return section.questions.map((q) => ({ ...q, category: section.name }));
-  }));
+  quizData = shuffle(available);
 
   $("quiz-title").textContent = deck.name;
   $("start-screen").classList.add("hidden");
@@ -285,6 +344,20 @@ function startQuiz(unit, deckIndex) {
   showQuestion();
 
   closeSidebar();
+}
+
+function showDeckEmptyState(deck) {
+  const el = $("deck-empty-msg");
+  if (!el) return;
+  el.textContent = `All cards in "${deck.name}" are flagged. Review them in the Flagged Cards section.`;
+  el.classList.remove("hidden");
+}
+
+function hideDeckEmptyState() {
+  const el = $("deck-empty-msg");
+  if (!el) return;
+  el.classList.add("hidden");
+  el.textContent = "";
 }
 
 function updateScore() {
@@ -507,6 +580,7 @@ function backToUnits() {
   $("results-screen").classList.add("hidden");
   $("results-bar").style.width = "0%";
   $("start-screen").classList.remove("hidden");
+  hideDeckEmptyState();
   setActiveDeck(null);
   isFlaggedMode = false;
   $("flagged-deck-btn").classList.remove("active");
