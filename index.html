@@ -64,11 +64,21 @@
           <button class="sound-toggle" id="sound-toggle" onclick="toggleMute()" title="Mute sounds">&#128266;</button>
         </div>
 
-        <div class="progress-row">
+        <div class="progress-row" id="progress-row">
           <span class="progress-fraction" id="progress-fraction"></span>
           <div class="progress-line-container">
             <div class="progress-line-fill" id="progress-fill" style="width:0%"></div>
           </div>
+        </div>
+
+        <div id="retry-progress" class="retry-progress hidden" aria-live="polite">
+          <span id="retry-progress-count">0</span> cards left to master
+        </div>
+
+        <div id="retry-banner" class="retry-banner hidden" role="dialog" aria-live="polite">
+          <h2 class="retry-banner-title">Retry phase</h2>
+          <p class="retry-banner-body">You missed <span id="retry-banner-count">0</span> cards. Answer each one correctly to finish the deck.</p>
+          <button id="retry-continue-btn" class="retry-continue-btn" type="button" onclick="exitRetryBanner()">Continue</button>
         </div>
 
         <div class="question-layout" id="question-layout">

@@ -8,6 +8,11 @@ let answered = false;
 let isFlaggedMode = false;
 let flaggedCache = [];
 
+// Retry phase state (spec 007-retry-wrong-cards)
+let wrongCards = [];   // cards missed in main pass
+let retryMode = false; // true once retry phase is active
+let retryQueue = [];   // FIFO: shift on correct, push on wrong
+
 // Explainer state
 let explainerCache = null;   // { explanation, hasWarning } or null
 let explainerLoading = false;
@@ -131,7 +136,7 @@ function availableCardsForDeck(unit, deck) {
 }
 
 function toggleFlag() {
-  const data = quizData[current];
+  const data = currentCard();
   const flagged = [...flaggedCache];
   const idx = flagged.findIndex(c => c.question === data.question);
   const wasFlagged = idx >= 0;
@@ -149,18 +154,28 @@ function toggleFlag() {
   // In Flagged Cards mode, never mutate quizData — unflag takes effect on next
   // session start only (spec FR-005a).
   if (!wasFlagged && !isFlaggedMode) {
-    quizData.splice(current, 1);
-    if (quizData.length === 0 || current >= quizData.length) {
-      showResults();
+    if (retryMode) {
+      retryQueue = retryQueue.filter(c => c !== data);
+      updateRetryProgress();
+      if (retryQueue.length === 0) {
+        finishRetrySession();
+      } else {
+        showQuestion();
+      }
     } else {
-      showQuestion();
+      quizData.splice(current, 1);
+      if (quizData.length === 0 || current >= quizData.length) {
+        endOfMainPass();
+      } else {
+        showQuestion();
+      }
     }
   }
 }
 
 function updateFlagBtn() {
   const btn = $("flag-btn");
-  const data = quizData[current];
+  const data = currentCard();
   if (isFlagged(data.question)) {
     btn.innerHTML = "&#9733;";
     btn.classList.add("active");
@@ -196,6 +211,13 @@ function startFlaggedQuiz() {
   current = 0;
   score = 0;
   answered = false;
+  wrongCards = [];
+  retryMode = false;
+  retryQueue = [];
+  $("retry-banner").classList.add("hidden");
+  $("retry-progress").classList.add("hidden");
+  $("progress-row").classList.remove("hidden");
+  $("question-layout").classList.remove("hidden");
   updateScore();
   showQuestion();
   closeSidebar();
@@ -208,6 +230,54 @@ function shuffle(arr) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
+}
+
+// ── Retry Phase (spec 007-retry-wrong-cards) ──
+
+function currentCard() {
+  return retryMode ? retryQueue[0] : quizData[current];
+}
+
+function updateRetryProgress() {
+  $("retry-progress-count").textContent = retryQueue.length;
+}
+
+function endOfMainPass() {
+  if (isFlaggedMode || wrongCards.length === 0) {
+    showResults();
+  } else {
+    enterRetryPhase();
+  }
+}
+
+function enterRetryPhase() {
+  retryMode = true;
+  retryQueue = shuffle(wrongCards.slice());
+  $("question-layout").classList.add("hidden");
+  $("progress-row").classList.add("hidden");
+  $("score-display").textContent = "Retry";
+  $("retry-banner-count").textContent = retryQueue.length;
+  $("retry-banner").classList.remove("hidden");
+  const btn = $("retry-continue-btn");
+  if (btn) btn.focus();
+}
+
+function exitRetryBanner() {
+  $("retry-banner").classList.add("hidden");
+  $("retry-progress").classList.remove("hidden");
+  updateRetryProgress();
+  $("question-layout").classList.remove("hidden");
+  showQuestion();
+}
+
+function finishRetrySession() {
+  retryMode = false;
+  retryQueue = [];
+  wrongCards = [];
+  $("retry-progress").classList.add("hidden");
+  $("progress-row").classList.remove("hidden");
+  updateScore();
+  showResults();
 }
 
 function init() {
@@ -340,6 +410,13 @@ function startQuiz(unit, deckIndex) {
   current = 0;
   score = 0;
   answered = false;
+  wrongCards = [];
+  retryMode = false;
+  retryQueue = [];
+  $("retry-banner").classList.add("hidden");
+  $("retry-progress").classList.add("hidden");
+  $("progress-row").classList.remove("hidden");
+  $("question-layout").classList.remove("hidden");
   updateScore();
   showQuestion();
 
@@ -372,10 +449,14 @@ function updateProgress() {
 
 function showQuestion() {
   answered = false;
-  const data = quizData[current];
+  const data = currentCard();
   const layout = $("question-layout");
 
-  $("q-watermark").textContent = String(current + 1).padStart(2, "0");
+  if (retryMode) {
+    $("q-watermark").textContent = String(retryQueue.length).padStart(2, "0");
+  } else {
+    $("q-watermark").textContent = String(current + 1).padStart(2, "0");
+  }
   $("q-category").textContent = data.category;
   $("q-text").textContent = data.question;
   $("feedback").classList.add("hidden");
@@ -414,7 +495,7 @@ function showQuestion() {
   layout.classList.remove("exit");
   layout.classList.add("enter");
   setTimeout(() => layout.classList.remove("enter"), 500);
-  updateProgress();
+  if (!retryMode) updateProgress();
   updateFlagBtn();
 }
 
@@ -422,27 +503,40 @@ function selectAnswer(index) {
   if (answered) return;
   answered = true;
 
-  const data = quizData[current];
+  const data = currentCard();
   const buttons = document.querySelectorAll(".option-btn");
   const feedback = $("feedback");
   const correctIndex = data._shuffledCorrect;
   const isCorrect = index === correctIndex;
 
   if (isCorrect) {
-    score++;
-    updateScore();
+    if (!retryMode) {
+      score++;
+      updateScore();
+    }
     playSound("correct");
     if (navigator.vibrate) navigator.vibrate(50);
 
     // Skip all animation — jump to next question instantly
-    if (current < quizData.length - 1) {
+    if (retryMode) {
+      retryQueue.shift();
+      updateRetryProgress();
+      if (retryQueue.length === 0) {
+        finishRetrySession();
+      } else {
+        showQuestion();
+      }
+    } else if (current < quizData.length - 1) {
       current++;
       showQuestion();
     } else {
-      showResults();
+      endOfMainPass();
     }
     return;
   } else {
+    if (!retryMode) {
+      wrongCards.push(data);
+    }
     playSound("wrong");
     buttons[index].classList.add("wrong");
     buttons.forEach((btn, i) => {
@@ -492,7 +586,7 @@ function handleWhyClick() {
   section.classList.remove("explainer-warning");
   explainerExpanded = true;
 
-  var data = quizData[current];
+  var data = currentCard();
   var requestGeneration = current; // track which question this request is for
 
   // 10-second client-side timeout
@@ -542,6 +636,19 @@ function handleWhyClick() {
 }
 
 function advanceQuestion() {
+  if (retryMode) {
+    // Wrong answer in retry phase: send the missed card to the end of the
+    // queue so the learner cycles through all other remaining retry cards
+    // before seeing it again (FR-013).
+    const missed = retryQueue.shift();
+    retryQueue.push(missed);
+    updateRetryProgress();
+    $("question-layout").classList.add("exit");
+    setTimeout(() => {
+      showQuestion();
+    }, EXIT_DURATION);
+    return;
+  }
   if (current < quizData.length - 1) {
     $("question-layout").classList.add("exit");
     setTimeout(() => {
@@ -549,7 +656,10 @@ function advanceQuestion() {
       showQuestion();
     }, EXIT_DURATION);
   } else {
-    showResults();
+    $("question-layout").classList.add("exit");
+    setTimeout(() => {
+      endOfMainPass();
+    }, EXIT_DURATION);
   }
 }
 
@@ -583,6 +693,12 @@ function backToUnits() {
   hideDeckEmptyState();
   setActiveDeck(null);
   isFlaggedMode = false;
+  wrongCards = [];
+  retryMode = false;
+  retryQueue = [];
+  $("retry-banner").classList.add("hidden");
+  $("retry-progress").classList.add("hidden");
+  $("progress-row").classList.remove("hidden");
   $("flagged-deck-btn").classList.remove("active");
   updateFlaggedDeck();
 }

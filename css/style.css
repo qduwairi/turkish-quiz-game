@@ -1001,3 +1001,78 @@ body {
   .explainer-section.visible { padding: 10px 12px; }
   .why-btn { padding: 8px 20px; font-size: 0.75rem; }
 }
+
+/* ── Retry Phase ── */
+
+.retry-banner {
+  margin: 48px auto 0;
+  max-width: 520px;
+  padding: 40px 32px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  text-align: center;
+}
+
+.retry-banner-title {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 1.8rem;
+  margin: 0 0 12px;
+  color: var(--black);
+}
+
+.retry-banner-body {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--black);
+  margin: 0 0 28px;
+}
+
+.retry-continue-btn {
+  display: inline-block;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 12px 40px;
+  background: var(--black);
+  color: var(--cream);
+  border: none;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.retry-continue-btn:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+
+.retry-progress {
+  margin: 8px 0 16px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.retry-progress #retry-progress-count {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .retry-banner {
+    margin: 32px 16px 0;
+    padding: 28px 20px;
+  }
+  .retry-banner-title { font-size: 1.5rem; }
+  .retry-banner-body { font-size: 0.95rem; }
+}
