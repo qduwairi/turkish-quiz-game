@@ -17,7 +17,10 @@
       "Bash(PYTHONIOENCODING=utf-8 NO_COLOR=1 specify init --help)",
       "Bash(PYTHONIOENCODING=utf-8 NO_COLOR=1 specify init --here --ai claude --force)",
       "Bash(taskkill //F //IM python.exe)",
-      "Bash(taskkill //F //IM python3.exe)"
+      "Bash(taskkill //F //IM python3.exe)",
+      "Bash(powershell.exe:*)",
+      "mcp__claude_ai_Atlassian__getAccessibleAtlassianResources",
+      "Bash(python:*)"
     ]
   }
 }
