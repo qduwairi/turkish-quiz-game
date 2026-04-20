@@ -20,7 +20,13 @@
       "Bash(taskkill //F //IM python3.exe)",
       "Bash(powershell.exe:*)",
       "mcp__claude_ai_Atlassian__getAccessibleAtlassianResources",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/create-new-feature.ps1 -Json -ShortName \"vocab-tool\" \"I would like to create a vocabulary tool that allows the user to add their vocabulary via csv, it would then create a multiple choice questions for these vocabulary and a spaced repetition system for review.\")",
+      "Bash(npx --yes http-server -c-1 -p 8080 -s)",
+      "Bash(curl -sI http://localhost:8080/index.html)",
+      "Bash(curl -sI http://localhost:8080/tests/vocab/index.html)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git switch *)"
     ]
   }
 }

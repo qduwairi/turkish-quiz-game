@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vocabulary Tests (009)</title>
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; color: #222; }
+    h1 { margin-bottom: 4px; }
+    #summary { font-size: 18px; margin: 12px 0 24px; }
+    .pass { color: #0a7a2f; }
+    .fail { color: #b40012; }
+    .result { padding: 6px 10px; border-left: 3px solid #ccc; margin: 4px 0; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; white-space: pre-wrap; }
+    .result.pass { border-color: #0a7a2f; background: #f0fbf3; }
+    .result.fail { border-color: #b40012; background: #fdf2f3; }
+    h2 { margin-top: 28px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Vocabulary feature tests (009)</h1>
+  <div id="summary">Running…</div>
+  <div id="results"></div>
+
+  <script>
+    // Tiny zero-dependency test harness. Each test-*.js file calls window.__vocabTest.add(...)
+    // after loading; after all files are loaded we run them and render pass/fail counts.
+    (function () {
+      const tests = [];
+      let currentSuite = null;
+      window.__vocabTest = {
+        suite(name) { currentSuite = name; },
+        add(name, fn) { tests.push({ suite: currentSuite || '(uncategorised)', name, fn }); },
+      };
+      window.__runVocabTests = function () {
+        const results = document.getElementById('results');
+        const summary = document.getElementById('summary');
+        let pass = 0, fail = 0;
+        const bySuite = {};
+        for (const t of tests) {
+          (bySuite[t.suite] = bySuite[t.suite] || []).push(t);
+        }
+        for (const suite in bySuite) {
+          const h = document.createElement('h2');
+          h.textContent = suite;
+          results.appendChild(h);
+          for (const t of bySuite[suite]) {
+            const div = document.createElement('div');
+            div.className = 'result';
+            try {
+              t.fn();
+              div.classList.add('pass');
+              div.textContent = '✓ ' + t.name;
+              pass++;
+            } catch (err) {
+              div.classList.add('fail');
+              div.textContent = '✗ ' + t.name + '\n   ' + (err && err.stack ? err.stack : String(err));
+              fail++;
+            }
+            results.appendChild(div);
+          }
+        }
+        summary.innerHTML = (fail === 0
+          ? '<span class="pass">' + pass + ' passing</span>'
+          : '<span class="pass">' + pass + ' passing</span>, <span class="fail">' + fail + ' failing</span>');
+      };
+      // Minimal assertion helpers shared by all test files.
+      window.assert = function (cond, msg) { if (!cond) throw new Error(msg || 'assertion failed'); };
+      window.assertEqual = function (actual, expected, msg) {
+        const a = JSON.stringify(actual), e = JSON.stringify(expected);
+        if (a !== e) throw new Error((msg || 'not equal') + '\n   expected: ' + e + '\n   actual:   ' + a);
+      };
+    })();
+  </script>
+
+  <!-- Feature modules under test -->
+  <script src="../../js/vocab/csvImport.js"></script>
+  <script src="../../js/vocab/srsScheduler.js"></script>
+  <script src="../../js/vocab/mcqGenerator.js"></script>
+
+  <!-- Test files -->
+  <script src="test-csvImport.js"></script>
+  <script src="test-srsScheduler.js"></script>
+  <script src="test-mcqGenerator.js"></script>
+
+  <script>window.__runVocabTests();</script>
+</body>
+</html>
