@@ -37,6 +37,22 @@
       </button>
     </div>
     <nav class="sidebar-nav" id="sidebar-nav"></nav>
+
+    <!-- Vocabulary feature (009) sidebar group -->
+    <div class="sidebar-vocab-group" id="vocab-sidebar-group">
+      <div class="sidebar-vocab-header">Vocabulary</div>
+      <button class="sidebar-unit sidebar-vocab-entry" id="vocab-nav-upload" type="button">
+        <span class="sidebar-unit-name">&#8682; Upload CSV</span>
+      </button>
+      <button class="sidebar-unit sidebar-vocab-entry" id="vocab-nav-decks" type="button">
+        <span class="sidebar-unit-name">&#9783; My Decks</span>
+      </button>
+      <button class="sidebar-unit sidebar-vocab-entry" id="vocab-nav-review" type="button">
+        <span class="sidebar-unit-name">&#10227; Review</span>
+        <span class="sidebar-unit-meta" id="vocab-review-badge"></span>
+      </button>
+      <ul class="sidebar-vocab-decks" id="vocab-sidebar-decks"></ul>
+    </div>
   </aside>
 
   <!-- Sidebar toggle (mobile) -->
@@ -103,6 +119,9 @@
         </div>
       </div>
 
+      <!-- Vocabulary feature (009) view container — populated by js/vocab/vocabUI.js -->
+      <div id="vocab-screen" class="vocab-screen hidden"></div>
+
       <!-- Results Screen -->
       <div id="results-screen" class="results-screen hidden">
         <span class="ornament">&#10043; &#10043; &#10043;</span>
@@ -141,5 +160,12 @@
 <script src="js/error-tracker.js"></script>
 <script src="js/questions.js"></script>
 <script src="js/quiz.js"></script>
+<!-- Vocabulary feature (009) -->
+<script src="js/vocab/csvImport.js"></script>
+<script src="js/vocab/srsScheduler.js"></script>
+<script src="js/vocab/mcqGenerator.js"></script>
+<script src="js/vocab/deckStore.js"></script>
+<script src="js/vocab/vocabSession.js"></script>
+<script src="js/vocab/vocabUI.js"></script>
 </body>
 </html>

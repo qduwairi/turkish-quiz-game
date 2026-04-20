@@ -9,6 +9,65 @@
         ".write": "!data.exists() && newData.exists()",
         ".validate": "newData.hasChildren(['message', 'signature', 'kind', 'page', 'timestamp', 'sessionId', 'breadcrumbs']) && newData.child('message').isString() && newData.child('message').val().length <= 500 && newData.child('signature').isString() && newData.child('kind').isString() && (newData.child('kind').val() == 'js_error' || newData.child('kind').val() == 'unhandled_rejection' || newData.child('kind').val() == 'network_failure') && newData.child('page').isString() && newData.child('page').val().length <= 500 && newData.child('timestamp').isNumber() && newData.child('sessionId').isString()"
       }
+    },
+    "vocabulary": {
+      "$uid": {
+        "decks": {
+          "$deckId": {
+            ".validate": "newData.hasChildren(['name', 'createdAt'])",
+            "name": { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 64" },
+            "description": { ".validate": "newData.isString() && newData.val().length <= 200" },
+            "createdAt": { ".validate": "newData.isNumber()" },
+            "itemCount": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": false }
+          }
+        },
+        "items": {
+          "$deckId": {
+            "$itemId": {
+              ".validate": "newData.hasChildren(['term', 'translation', 'importedAt'])",
+              "term": { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 200" },
+              "translation": { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 200" },
+              "importedAt": { ".validate": "newData.isNumber()" },
+              "extras": {
+                "$key": { ".validate": "newData.isString() && newData.val().length <= 200" }
+              },
+              "$other": { ".validate": false }
+            }
+          }
+        },
+        "events": {
+          "$deckId": {
+            "$itemId": {
+              "$eventId": {
+                ".write": "!data.exists() && newData.exists()",
+                ".validate": "newData.hasChildren(['ts', 'correct', 'direction', 'mode'])",
+                "ts": { ".validate": "newData.isNumber()" },
+                "correct": { ".validate": "newData.isBoolean()" },
+                "direction": { ".validate": "newData.isString() && (newData.val() == 'termToTranslation' || newData.val() == 'translationToTerm')" },
+                "mode": { ".validate": "newData.isString() && (newData.val() == 'quiz' || newData.val() == 'review')" },
+                "$other": { ".validate": false }
+              }
+            }
+          }
+        },
+        "reviewState": {
+          "$deckId": {
+            "$itemId": {
+              ".validate": "newData.hasChildren(['interval', 'ease', 'streak', 'dueDate', 'lastSeen', 'totalSeen'])",
+              "interval": { ".validate": "newData.isNumber()" },
+              "ease": { ".validate": "newData.isNumber()" },
+              "streak": { ".validate": "newData.isNumber()" },
+              "dueDate": { ".validate": "newData.isString() && newData.val().length == 10" },
+              "lastSeen": { ".validate": "newData.isNumber()" },
+              "totalSeen": { ".validate": "newData.isNumber()" }
+            }
+          }
+        },
+        "meta": {
+          "deckOrder": { ".validate": "newData.isString() || newData.hasChildren()" }
+        }
+      }
     }
   }
 }

@@ -1076,3 +1076,197 @@ body {
   .retry-banner-title { font-size: 1.5rem; }
   .retry-banner-body { font-size: 0.95rem; }
 }
+
+/* ===== Vocabulary feature (009) ===== */
+
+.sidebar-vocab-group {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-vocab-header {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 0 20px 8px;
+}
+.sidebar-vocab-entry {
+  min-height: 44px;
+}
+.sidebar-vocab-entry.active {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.sidebar-vocab-decks {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.sidebar-vocab-decks li button {
+  min-height: 44px;
+  padding-left: 36px;
+  font-size: 0.9rem;
+}
+
+.vocab-screen {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-family: var(--sans);
+  color: var(--black);
+}
+.vocab-screen h1 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 0 0 8px;
+}
+.vocab-screen .vocab-subtitle {
+  color: var(--muted);
+  margin: 0 0 24px;
+}
+
+/* Upload dropzone */
+.vocab-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--nested-subtle);
+  transition: border-color 0.15s, background 0.15s;
+}
+.vocab-dropzone.is-dragover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.vocab-dropzone input[type="file"] { display: none; }
+.vocab-dropzone-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 20px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  margin-top: 12px;
+}
+.vocab-dropzone-btn:hover { background: var(--accent-light); }
+
+/* Deck card grid */
+.vocab-deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.vocab-deck-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--cream);
+}
+.vocab-deck-card h3 {
+  margin: 0 0 4px;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+}
+.vocab-deck-card .meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+.vocab-deck-card .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.vocab-deck-card .actions button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--black);
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+.vocab-deck-card .actions button:hover { background: var(--hover-subtle); }
+.vocab-deck-card .actions button[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Review list */
+.vocab-review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.vocab-review-item {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.vocab-review-item .overdue {
+  color: var(--red);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* Import summary */
+.vocab-import-summary {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--green-light);
+  border: 1px solid var(--green);
+}
+.vocab-import-summary.has-errors {
+  background: var(--red-light);
+  border-color: var(--red);
+}
+.vocab-import-summary ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+/* Progress indicator */
+.vocab-progress {
+  margin-top: 16px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.vocab-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+/* Review badge in sidebar */
+#vocab-review-badge:empty { display: none; }
+#vocab-review-badge {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  min-width: 22px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .vocab-deck-grid { grid-template-columns: 1fr; }
+  .vocab-screen { padding: 24px 16px; }
+}
